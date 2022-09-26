@@ -2,34 +2,30 @@
 
 int main()
 {
-    int *StackInt = (int*)calloc(10, sizeof(int));
+    Stack stack;
+    StackCtor(stack, 12);  
 
-    struct Stack stack = 
-    {
-        StackInt, 
-        1,
-        0
-    };
+    StackPush(&stack, 5);
+    StackPush(&stack, 3);
+    StackPush(&stack, 67);
+    StackPush(&stack, 91);
+    StackPush(&stack, 5234);
+    StackPush(&stack, 1);
+    StackPush(&stack, 5);
+    StackPush(&stack, 3);
+    StackPush(&stack, 67);
+    StackPush(&stack, 91);
+    StackPop(&stack);
+    StackPush(&stack, 5234);
+    StackPush(&stack, 1);
+    StackPop(&stack);
+    StackPush(&stack, 5);
+    StackPush(&stack, 3);
+    StackPush(&stack, 67);
+    StackPush(&stack, 91);
+    StackPush(&stack, 5234);
+    StackPush(&stack, 1);
+    StackPop(&stack);
 
-    Push(&stack, 5);
-    Push(&stack, 3);
-    Push(&stack, 67);
-    Push(&stack, 91);
-    Push(&stack, 5234);
-    Push(&stack, 1);
-    Push(&stack, 2);
-
-
-
-    for(int i = 0; i < stack.current; i++)
-    {
-        printf("%d ", stack.stackptr[i]);
-    }
-
-    printf("\n\n");
-
-    printf("%d %d %d %d %d %d %d", Pop(&stack), Pop(&stack), Pop(&stack), Pop(&stack), Pop(&stack), Pop(&stack), Pop(&stack));
-
-
-    free(StackInt);
+    // StackDtor(&stack); ломает все??????????????
 }
