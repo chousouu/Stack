@@ -11,9 +11,9 @@ void StackCtor_(struct Stack *stack, int number, int line_ctor, const char* file
 
         #ifdef DEBUG_INFO
         line_ctor,
-        0,
         file_ctor,
-        func_name, 
+        0,
+        NULL, 
         stack_name
         #endif//DEBUG_INFO
     };
@@ -22,6 +22,8 @@ void StackCtor_(struct Stack *stack, int number, int line_ctor, const char* file
 void StackPush(struct Stack *stack, int number)
 {
     #ifdef DEBUG_INFO
+        stack->line_push = __LINE__;
+        stack->file_push = __FILE__;
         Stack_OK(stack, number)
     #endif// DEBUG_INFO
 
@@ -118,7 +120,7 @@ void DecodeProblem(FILE *logfile, struct Stack *stack, int problem_code) //*****
 
 }
 
-void StackDump(struct Stack *stack, int problem_code) // ******CHANGE STACK->file_push*****//
+void StackDump(struct Stack *stack, int problem_code) // ***********//
 {
     FILE *logfile = fopen("log.txt", "a");
 
@@ -131,7 +133,7 @@ void StackDump(struct Stack *stack, int problem_code) // ******CHANGE STACK->fil
     }
     else 
     {
-        fprintf(logfile, "%s(%d)\n", stack->file_push, stack->line_ctor);
+        fprintf(logfile, "%s(%d)\n", stack->file_ctor, stack->line_ctor);
 
         fprintf(logfile, "{\n");
 
@@ -141,7 +143,7 @@ void StackDump(struct Stack *stack, int problem_code) // ******CHANGE STACK->fil
             StackPrint(stack, logfile);
         fprintf(logfile, "\t}\n");
 
-        fprintf(logfile, "}");
+        fprintf(logfile, "}\n");
     }
 }
 

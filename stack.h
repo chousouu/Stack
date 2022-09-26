@@ -40,8 +40,8 @@ struct Stack
 
     #ifdef DEBUG_INFO
     int line_ctor;
-    int line_push;
     const char *file_ctor;
+    int line_push;
     const char *file_push;
     const char *stackname;
     #endif //DEBUG_INFO
