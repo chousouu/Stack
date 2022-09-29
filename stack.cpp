@@ -1,4 +1,7 @@
 #include "stack.h"
+FILE *logfile = NULL;
+bool zero_elem_Pop = 0; 
+
 static int *PoisonStack(int start, int max)
 {
     int* allocate =(int*)calloc(max, sizeof(int));
@@ -12,8 +15,7 @@ static int *PoisonStack(int start, int max)
 }
 
 static void StackResize(struct Stack *stack, bool mode)
-{
-    // TODO: run verificator
+{    
     if(mode == STACK_DECREASE)
     {   
         stack->capacity /= CAP_MULTIPLIER;    
@@ -23,7 +25,7 @@ static void StackResize(struct Stack *stack, bool mode)
         stack->capacity *= CAP_MULTIPLIER;
     }  
 
-    stack->data = (int*)realloc(stack->data, sizeof(int) * stack->capacity); // FILL WITH POISON?
+    stack->data = (int*)realloc(stack->data, sizeof(int) * stack->capacity); 
 
     if(stack->data == NULL)
     {
@@ -41,35 +43,26 @@ void StackCtor_(struct Stack *stack, int capacity VAR_INFO)
 {
     *stack = 
     {
-        .data = (int*)PoisonStack(0, capacity),// TODO: poison
+        .data = (int*)PoisonStack(0, capacity),
         capacity,
         .size = 0,
         .capmode = STACK_INCREASE,
 
         #ifdef DEBUG_INFO
-        line_ctor,
-        file_ctor,
-        .line_push = 0,
-        .file_push = NULL, 
-        stack_name
+        .line_ctor = line,
+        .file_ctor = file,
+        .line_action = 0,
+        .file_action = NULL, 
+        .action_funcname = NULL,
+        .stackname = name,
         #endif//DEBUG_INFO
     };
 }
 
-void StackPush(struct Stack *stack, int number)
+int StackPush(struct Stack *stack, int number) 
 {
     #ifdef DEBUG_INFO
-        stack->line_push = __LINE__; // remove
-        stack->file_push = __FILE__;
-        Stack_OK(stack) // StackDump (__LINE__, __FILE__, stack, number);
-
-        // int err = Verify
-        // StackDump (err)
-        // if (err)
-        // {
-        //      return jopa;
-        // }
-
+        Stack_OK(stack)
     #endif// DEBUG_INFO
 
     if(stack->size == stack->capacity - 1)
@@ -80,17 +73,21 @@ void StackPush(struct Stack *stack, int number)
     stack->data[stack->size] = number;
     stack->size++; 
 
-    return; // 0;
+    return 1; 
 }
 
 // StackTop. Does not remove top element
 
-int StackPop(Stack *stack) //, int *ErrCode) //*****************************
+int StackPop(Stack *stack)
 {
+    if(stack->size < 1)
+    {
+        zero_elem_Pop = POP_EMPTY_STACK;
+    }
     #ifdef DEBUG_INFO
         Stack_OK(stack)
-    #endif DEBUG_INFO
-    
+    #endif //DEBUG_INFO
+
     if(stack->size == (stack->capacity / CAP_MULTIPLIER))
     {
         stack->capmode = STACK_DECREASE;
@@ -108,9 +105,14 @@ int StackPop(Stack *stack) //, int *ErrCode) //*****************************
     return temp;
 }
 
+void GetActionInfo(struct Stack *stack VAR_INFO)
+{
+    stack->line_action = line; 
+    stack->file_action = file;
+    stack->action_funcname = name;
+}
 
-
-int StackVerify(struct Stack *stack) //*********************************//
+int StackVerify(struct Stack *stack) 
 {
     int problem_code = 0;
 
@@ -122,6 +124,11 @@ int StackVerify(struct Stack *stack) //*********************************//
     }
     else
     {
+        if(zero_elem_Pop)
+        {
+            problem_code |= POP_EMPTY_STACK;
+            zero_elem_Pop = 0;
+        }
         if(stack->size < 0)
         {
             problem_code |= NEGATIVE_SIZE;
@@ -134,16 +141,16 @@ int StackVerify(struct Stack *stack) //*********************************//
         {
             problem_code |= CAP_SMALLER_SIZE;
         }
-        if(stack->size == 0 && stack->data[0] == POISON) // будет вызываться всегда для первого элемента
+        if(stack->data == NULL)
         {
-            problem_code |= POP_EMPTY_STACK;
+            problem_code |= MEM_ALLOC_FAIL;
         }
     }
 
     return problem_code;
 }
 
-void DecodeProblem(FILE *logfile, struct Stack *stack, int problem_code) //*****************************//
+void DecodeProblem(struct Stack *stack, int problem_code) 
 {
     if(problem_code &= STACK_NULL)
     {
@@ -162,12 +169,19 @@ void DecodeProblem(FILE *logfile, struct Stack *stack, int problem_code) //*****
         fprintf(logfile, "Stack capacity cannot be smaller than size.\n   [stack.capacity = %d]\n   [stack.size = %d]\n",
                                                                             stack->capacity      ,    stack->size);
     }
-
+    if(problem_code &= POP_EMPTY_STACK)
+    {
+        fprintf(logfile, "You are trying to pop nothing.\n"); // xz kak opisat
+    }
+    if(problem_code &= MEM_ALLOC_FAIL)
+    {
+        fprintf(logfile, "Failed to allocate memory for stack.\n");
+    }
 }
 
-void StackDump(struct Stack *stack, int problem_code) // ***********//
+void StackDump(struct Stack *stack, int problem_code) // ***********// 
 {
-    FILE *logfile = fopen("log.txt", "a");
+    logfile = fopen("log.txt", "a");
     
     if(logfile == NULL)
     {
@@ -176,15 +190,12 @@ void StackDump(struct Stack *stack, int problem_code) // ***********//
     else 
     {
         fprintf(logfile, "=====================\n");
-        fprintf(logfile, "StackPush() at %s (%d):\n"                "Stack[%p](%s) \"%s\" at main()\n", 
-                        stack->file_push, stack->line_push,          stack, (problem_code ? "ERROR" : "ok"), stack->stackname);
-       // if(problem_code)
+        fprintf(logfile, "%s at %s (%d):\n"                         "Stack[%p](%s) \"%s\" at main()\n", 
+  stack->action_funcname ,stack->file_action, stack->line_action,     stack, (problem_code ? "ERROR" : "ok"), stack->stackname);
+        if(problem_code)
         {
-            DecodeProblem(logfile, stack, problem_code); 
+            DecodeProblem(stack, problem_code); 
 
-            fprintf(logfile, "\t{\n");
-                StackPrint(stack, logfile);
-            fprintf(logfile, "\t}\n");
 
             fprintf(logfile, "%s(%d)\n", stack->file_ctor, stack->line_ctor);
 
@@ -192,15 +203,19 @@ void StackDump(struct Stack *stack, int problem_code) // ***********//
 
             fprintf(logfile, "\tsize = %d\n\tcapacity = %d\n\tdata[%p]\n", stack->size, stack->capacity, stack->data);
             
+            fprintf(logfile, "\t{\n");
+                StackPrint(stack);
+            fprintf(logfile, "\t}\n");
+            
             fprintf(logfile, "}\n");
             
-            fclose(logfile);
         }
+            fclose(logfile);
     }
 
 }
 
-void StackPrint(struct Stack *stack, FILE *logfile)
+void StackPrint(struct Stack *stack)
 {
     for(int i = 0; i < stack->capacity; i++)
     {

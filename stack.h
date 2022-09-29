@@ -18,16 +18,19 @@ enum Options
 
 #ifdef DEBUG_INFO
     #define Stack_OK(stack) \
-    StackDump(stack, StackVerify(stack));
+    int problem_code = StackVerify(stack); \
+    StackDump(stack, problem_code); \
+    if(problem_code) return problem_code;
 #endif
 
 enum ERRORS
 {
-    STACK_NULL         = 1,
+    POP_EMPTY_STACK    = 1,
     NEGATIVE_SIZE      = 2,
     NEGATIVE_CAPACITY  = 4,
     CAP_SMALLER_SIZE   = 8,
-    POP_EMPTY_STACK    = 16,
+    STACK_NULL         = 16,
+    MEM_ALLOC_FAIL     = 32,
 
 };
 const int POISON       = 0x91DF00;
@@ -42,27 +45,36 @@ struct Stack
     #ifdef DEBUG_INFO
     int         line_ctor;
     const char *file_ctor;
-    int         line_push;
-    const char *file_push;
+    int         line_action;
+    const char *file_action;
+    const char  *action_funcname;
     const char *stackname;
     #endif //DEBUG_INFO
 };
 
+#define StackPush_(stack, X) \
+GetActionInfo(&stack, __LINE__, __FILE__, "StackPush()"); \
+StackPush(&stack, X);
+
+#define StackPop_(stack) \
+GetActionInfo(&stack, __LINE__, __FILE__, "StackPop()"); \
+StackPop(&stack);
 
 #ifdef DEBUG_INFO
-#define VAR_INFO , int line_ctor, const char* file_ctor, const char *stack_name
+    #define VAR_INFO , int line, const char* file, const char *name
 #else
-#define VAR_INFO
+    #define VAR_INFO
 #endif
 
 
-void DecodeProblem(FILE *logfile, struct Stack *stack, int problem_code);
+
+void GetActionInfo(struct Stack *stack VAR_INFO);
+void DecodeProblem(struct Stack *stack, int problem_code);
 void StackCtor_ (struct Stack *stack, int number VAR_INFO);
-void StackPush  (struct Stack *stack, int number); 
+int  StackPush  (struct Stack *stack, int number); 
 int  StackPop   (Stack *stack);
-void StackPrint (struct Stack *stack);
 void StackDump  (struct Stack *stack, int problem_code);
 void StackDtor  (struct Stack *stack);
 int  StackVerify(struct Stack *stack);
-void StackPrint (struct Stack *stack, FILE *logfile);
+void StackPrint (struct Stack *stack);
 #endif //STACK_H
