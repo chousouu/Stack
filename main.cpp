@@ -8,6 +8,35 @@ int main()
     int err_code = 0;
 
 
+    StackPush_(stack, 5);
+    StackPush_(stack, 5);
+    StackPush_(stack, 5);
+    StackPush_(stack, 5);
+    StackPush_(stack, 5);
+    StackPush_(stack, 5);
+    StackPush_(stack, 5);
+    StackPush_(stack, 5);
+    StackPush_(stack, 5);
+    StackPush_(stack, 5);
+    StackPush_(stack, 5);
+    StackPush_(stack, 5);
+    StackPush_(stack, 5);
+    StackPop_(stack, err_code);
+    StackPop_(stack, err_code);
+    StackPop_(stack, err_code);
+    StackPop_(stack, err_code);
+    StackPop_(stack, err_code);
+    StackPop_(stack, err_code);
+    StackPop_(stack, err_code);
+    StackPop_(stack, err_code);
+    StackPop_(stack, err_code);
+    StackPop_(stack, err_code);
+    StackPop_(stack, err_code);
+    StackPop_(stack, err_code);
+    StackPop_(stack, err_code);
+    StackPop_(stack, err_code);
+
+/*
     StackPop_(stack, err_code);
     StackPush_(stack, 5);
     StackPop_(stack, err_code);
@@ -18,7 +47,7 @@ int main()
     StackPop_(stack, err_code);
     StackPop_(stack, err_code);
     StackPop_(stack, err_code);
-
+*/
 
     StackDtor(&stack); 
     printf("done");

@@ -79,7 +79,7 @@ void StackCtor_(struct Stack *stack, int capacity VAR_INFO)
 int StackPush(struct Stack *stack, int number) 
 {
     Stack_OK(stack);
-    
+
     if(stack->size == stack->capacity - 1)
     {
         int err_resize = StackResize(stack, STACK_INCREASE);
@@ -88,6 +88,10 @@ int StackPush(struct Stack *stack, int number)
             StackDump(stack, err_resize);
             return err_resize;
         }
+
+        #ifdef CANARY_PROT
+            stack->data[stack->capacity - 1] = DATA_RIGHT_CANARY;
+        #endif//CANARY_PROT
     }
 
     stack->data[stack->size] = number;
@@ -129,6 +133,9 @@ int StackPop(Stack *stack, int *error_code)
             StackDump(stack, *error_code);
             return *error_code;
         }
+        #ifdef CANARY_PROT
+            stack->data[stack->capacity - 1] = DATA_RIGHT_CANARY;
+        #endif//CANARY_PROT
         stack->capmode = STACK_INCREASE;
     }
 
@@ -172,7 +179,10 @@ int StackVerify(struct Stack *stack)
 
         IF_ERR(stack->R_canary != STACK_RIGHT_CANARY, S_RIGHT_CANARY_DEAD);
 
-        
+        IF_ERR(stack->data[0] != DATA_LEFT_CANARY, D_LEFT_CANARY_DEAD);
+
+        IF_ERR(stack->data[stack->capacity - 1] != DATA_RIGHT_CANARY, D_RIGHT_CANARY_DEAD);
+
     }
 
     return problem_code;
@@ -212,6 +222,14 @@ void DecodeProblem(struct Stack *stack, int problem_code)  //Maybe macros? find 
     if(problem_code & S_RIGHT_CANARY_DEAD)
     {
         fprintf(logfile, "Right canary attacked! (stack struct)\n");
+    }
+    if(problem_code & D_LEFT_CANARY_DEAD)
+    {
+        fprintf(logfile, "Left canary attacked! (data)\n");
+    }
+    if(problem_code & D_RIGHT_CANARY_DEAD)
+    {
+        fprintf(logfile, "Right canary attacked! (data)\n");
     }
 }
 

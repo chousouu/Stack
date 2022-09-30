@@ -17,14 +17,16 @@ enum Options
 
 enum ERRORS
 {
-    POP_EMPTY_STACK    = 1,
-    NEGATIVE_SIZE      = 2,
-    NEGATIVE_CAPACITY  = 4,
-    CAP_SMALLER_SIZE   = 8,
-    STACK_NULL         = 16,
-    MEM_ALLOC_FAIL     = 32,
-    S_LEFT_CANARY_DEAD = 64,
+    POP_EMPTY_STACK     = 1,
+    NEGATIVE_SIZE       = 2,
+    NEGATIVE_CAPACITY   = 4,
+    CAP_SMALLER_SIZE    = 8,
+    STACK_NULL          = 16,
+    MEM_ALLOC_FAIL      = 32,
+    S_LEFT_CANARY_DEAD  = 64,
     S_RIGHT_CANARY_DEAD = 128,
+    D_LEFT_CANARY_DEAD  = 256,
+    D_RIGHT_CANARY_DEAD = 512,
 
 };
 
@@ -36,17 +38,18 @@ enum HexConst
     DATA_LEFT_CANARY   = 0xDBE4   , 
     DATA_RIGHT_CANARY  = 0xDAF1E91, 
 };
-  
+#ifdef CANARY_PROT
+    #define  ON_CANARY_PROT(SIDE) int SIDE##_canary;
+#else 
+    #define ON_CANARY_PROT(SIDE) 
+#endif //CANARY_PROT
+ 
  
 struct Stack
 {
-    #ifdef CANARY_PROT
-        int L_canary;
-    #endif //CANARY_PROT
+    ON_CANARY_PROT(L)
     int *data;
-    #ifdef CANARY_PROT
-        int R_canary;
-    #endif //CANARY_PROT
+    ON_CANARY_PROT(R)
     int capacity;
     int size;
     bool capmode;
@@ -63,6 +66,7 @@ struct Stack
 
 
 #define IF_ERR(ERROR, ERRCODE) if(ERROR) problem_code |= ERRCODE 
+
 
 #ifdef DEBUG_INFO
     #define VAR_INFO , int line, const char* file, const char *name
