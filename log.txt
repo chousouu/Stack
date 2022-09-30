@@ -1,0 +1,1531 @@
+=====================
+StackPush() at main.cpp (11):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 1
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		 [1] = 9559808(POISON)
+		 [2] = 9559808(POISON)
+		 [3] = 9559808(POISON)
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (11):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 2
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		 [2] = 9559808(POISON)
+		 [3] = 9559808(POISON)
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (12):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 2
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		 [2] = 9559808(POISON)
+		 [3] = 9559808(POISON)
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (12):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 3
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		 [3] = 9559808(POISON)
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (13):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 3
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		 [3] = 9559808(POISON)
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (13):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 4
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (14):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 4
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (14):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 5
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (15):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 5
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (15):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 6
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (16):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 6
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (16):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 7
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (17):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 7
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (17):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 8
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (18):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 8
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (18):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 9
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (19):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 9
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (19):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 10
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (20):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 10
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (20):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 11
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		*[10] = 5 
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (21):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 11
+	capacity = 12
+	data[00000253dc4d1600]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		*[10] = 5 
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (21):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 12
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		*[10] = 5 
+		*[11] = 5 
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (22):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 12
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		*[10] = 5 
+		*[11] = 5 
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (22):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 13
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		*[10] = 5 
+		*[11] = 5 
+		*[12] = 5 
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (23):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 13
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		*[10] = 5 
+		*[11] = 5 
+		*[12] = 5 
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPush() at main.cpp (23):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 14
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		*[10] = 5 
+		*[11] = 5 
+		*[12] = 5 
+		*[13] = 5 
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (24):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 14
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		*[10] = 5 
+		*[11] = 5 
+		*[12] = 5 
+		*[13] = 5 
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (24):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 13
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		*[10] = 5 
+		*[11] = 5 
+		*[12] = 5 
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (25):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 13
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		*[10] = 5 
+		*[11] = 5 
+		*[12] = 5 
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (25):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 12
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		*[10] = 5 
+		*[11] = 5 
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (26):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 12
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		*[10] = 5 
+		*[11] = 5 
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (26):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 11
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		*[10] = 5 
+		 [11] = 9559808(POISON)
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (27):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 11
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		*[10] = 5 
+		 [11] = 9559808(POISON)
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (27):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 10
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		 [10] = 9559808(POISON)
+		 [11] = 9559808(POISON)
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (28):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 10
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		*[9] = 5 
+		 [10] = 9559808(POISON)
+		 [11] = 9559808(POISON)
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (28):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 9
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		 [11] = 9559808(POISON)
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (29):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 9
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		*[8] = 5 
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		 [11] = 9559808(POISON)
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (29):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 8
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		 [11] = 9559808(POISON)
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (30):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 8
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		*[7] = 5 
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		 [11] = 9559808(POISON)
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (30):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 7
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		 [11] = 9559808(POISON)
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (31):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 7
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		*[6] = 5 
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		 [11] = 9559808(POISON)
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (31):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 6
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		 [11] = 9559808(POISON)
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (32):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 6
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		*[5] = 5 
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		 [11] = 9559808(POISON)
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (32):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 5
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		 [11] = 9559808(POISON)
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (33):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 5
+	capacity = 24
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		*[4] = 5 
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		 [11] = 9559808(POISON)
+		 [12] = 9559808(POISON)
+		 [13] = 9559808(POISON)
+		 [14] = 9559808(POISON)
+		 [15] = 9559808(POISON)
+		 [16] = 9559808(POISON)
+		 [17] = 9559808(POISON)
+		 [18] = 9559808(POISON)
+		 [19] = 9559808(POISON)
+		 [20] = 9559808(POISON)
+		 [21] = 9559808(POISON)
+		 [22] = 9559808(POISON)
+		#[23] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (33):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 4
+	capacity = 12
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (34):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 4
+	capacity = 12
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		*[3] = 5 
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (34):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 3
+	capacity = 12
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		 [3] = 9559808(POISON)
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (35):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 3
+	capacity = 12
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		*[2] = 5 
+		 [3] = 9559808(POISON)
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (35):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 2
+	capacity = 12
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		 [2] = 9559808(POISON)
+		 [3] = 9559808(POISON)
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (36):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 2
+	capacity = 12
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		*[1] = 5 
+		 [2] = 9559808(POISON)
+		 [3] = 9559808(POISON)
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (36):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 1
+	capacity = 12
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		 [1] = 9559808(POISON)
+		 [2] = 9559808(POISON)
+		 [3] = 9559808(POISON)
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (37):
+Stack[000000bd751ffb50](ok) "stack" at main()
+main.cpp(6)
+{
+	size = 1
+	capacity = 12
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		 [1] = 9559808(POISON)
+		 [2] = 9559808(POISON)
+		 [3] = 9559808(POISON)
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
+=====================
+StackPop() at main.cpp (37):
+Stack[000000bd751ffb50](ERROR) "stack" at main()
+You are trying to pop nothing.
+main.cpp(6)
+{
+	size = 1
+	capacity = 12
+	data[00000253dc4d16a0]
+	{
+		#[0] = 56292(CANARY)
+		 [1] = 9559808(POISON)
+		 [2] = 9559808(POISON)
+		 [3] = 9559808(POISON)
+		 [4] = 9559808(POISON)
+		 [5] = 9559808(POISON)
+		 [6] = 9559808(POISON)
+		 [7] = 9559808(POISON)
+		 [8] = 9559808(POISON)
+		 [9] = 9559808(POISON)
+		 [10] = 9559808(POISON)
+		#[11] = 229580433(CANARY)
+	}
+}
