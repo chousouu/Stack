@@ -101,7 +101,7 @@ int StackPush(struct Stack *stack, int number)
     return 1; 
 }
 
-// StackTop. Does not remove top element
+// StackTop. Does not remove top element/////
 
 int StackPop(Stack *stack, int *error_code)
 {
@@ -117,7 +117,6 @@ int StackPop(Stack *stack, int *error_code)
         StackDump(stack, *error_code);
         return *error_code;
     }
-
 
     if(stack->size == (stack->capacity / CAP_MULTIPLIER))
     {

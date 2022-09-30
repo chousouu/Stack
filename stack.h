@@ -43,7 +43,7 @@ enum HexConst
 #else 
     #define ON_CANARY_PROT(SIDE) 
 #endif //CANARY_PROT
- 
+
  
 struct Stack
 {

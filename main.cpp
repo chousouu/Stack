@@ -41,7 +41,6 @@ int main()
     StackPush_(stack, 5);
     StackPop_(stack, err_code);
     StackPush_(stack, 5);
-    StackPush_(stack, 3);  
     StackPush_(stack, 67);
     StackPop_(stack, err_code);
     StackPop_(stack, err_code);
