@@ -1,6 +1,6 @@
 #include "stack.h"
-FILE *logfile = NULL;
-bool zero_elem_Pop = 0; 
+static FILE *logfile = NULL;
+int err_code = 0;
 
 static int *PoisonStack(int start, int max)
 {
@@ -14,7 +14,7 @@ static int *PoisonStack(int start, int max)
     return allocate;
 }
 
-static void StackResize(struct Stack *stack, bool mode)
+static int StackResize(struct Stack *stack, bool mode)
 {    
     if(mode == STACK_DECREASE)
     {   
@@ -25,26 +25,36 @@ static void StackResize(struct Stack *stack, bool mode)
         stack->capacity *= CAP_MULTIPLIER;
     }  
 
-    stack->data = (int*)realloc(stack->data, sizeof(int) * stack->capacity); 
+    int *temp = (int*)realloc(stack->data, sizeof(int) * stack->capacity); 
 
-    if(stack->data == NULL)
+    if(temp == NULL)
     {
         printf("Cannot allocate memory\n");
-        return; 
+        return MEM_ALLOC_FAIL; 
     }
+
+    stack->data = temp;
 
     for(int i = stack->size; i < stack->capacity; i++)
     {
         stack->data[i] = POISON; 
     }
+
+    return 0; // on success
 }
 
 void StackCtor_(struct Stack *stack, int capacity VAR_INFO)
 {
     *stack = 
     {
-        .data = (int*)PoisonStack(0, capacity),
-        capacity,
+        #ifdef CANARY_PROT
+        .L_canary = STACK_LEFT_CANARY,
+        #endif //CANARY_PROT
+            .data = (int*)PoisonStack(0, capacity),
+        #ifdef CANARY_PROT
+        .R_canary = STACK_RIGHT_CANARY,
+        #endif //CANARY_PROT        
+        .capacity = capacity,
         .size = 0,
         .capmode = STACK_INCREASE,
 
@@ -56,37 +66,54 @@ void StackCtor_(struct Stack *stack, int capacity VAR_INFO)
         .action_funcname = NULL,
         .stackname = name,
         #endif//DEBUG_INFO
+    
     };
+
+    #ifdef CANARY_PROT
+    stack->size = 1;
+    stack->data[0] = DATA_LEFT_CANARY;
+    stack->data[capacity - 1] = DATA_RIGHT_CANARY;
+    #endif //CANARY_PROT
 }
 
 int StackPush(struct Stack *stack, int number) 
 {
-    #ifdef DEBUG_INFO
-        Stack_OK(stack)
-    #endif// DEBUG_INFO
-
+    Stack_OK(stack);
+    
     if(stack->size == stack->capacity - 1)
     {
-        StackResize(stack, STACK_INCREASE);
+        int err_resize = StackResize(stack, STACK_INCREASE);
+        if(err_resize == MEM_ALLOC_FAIL)
+        { 
+            StackDump(stack, err_resize);
+            return err_resize;
+        }
     }
 
     stack->data[stack->size] = number;
     stack->size++; 
 
+    Stack_OK(stack);
     return 1; 
 }
 
 // StackTop. Does not remove top element
 
-int StackPop(Stack *stack)
+int StackPop(Stack *stack, int *error_code)
 {
-    if(stack->size < 1)
+        Stack_OK(stack);
+    
+    #ifdef CANARY_PROT
+    if(stack->size < 2 && (stack->data[stack->size] == POISON || stack->data[stack->size] == DATA_LEFT_CANARY )) 
+    #else 
+    if(stack->size < 1 && (stack->data[stack->size] == POISON))
+    #endif //CANARY_PROT
     {
-        zero_elem_Pop = POP_EMPTY_STACK;
+        *error_code = POP_EMPTY_STACK;
+        StackDump(stack, *error_code);
+        return *error_code;
     }
-    #ifdef DEBUG_INFO
-        Stack_OK(stack)
-    #endif //DEBUG_INFO
+
 
     if(stack->size == (stack->capacity / CAP_MULTIPLIER))
     {
@@ -95,13 +122,22 @@ int StackPop(Stack *stack)
     
     if(stack->size == (stack->capacity / CAP_MULTIPLIER) / 2 - 1 && stack->capmode == STACK_DECREASE)
     {
-        StackResize(stack, stack->capmode);
+        int err_resize = StackResize(stack, stack->capmode);
+        if(err_resize  == MEM_ALLOC_FAIL)
+        {
+            *error_code = err_resize; 
+            StackDump(stack, *error_code);
+            return *error_code;
+        }
         stack->capmode = STACK_INCREASE;
     }
 
     stack->size--; 
     int temp = stack->data[stack->size];
     stack->data[stack->size] = POISON;
+
+        Stack_OK(stack);
+    
     return temp;
 }
 
@@ -123,59 +159,59 @@ int StackVerify(struct Stack *stack)
         return problem_code; 
     }
     else
-    {
-        if(zero_elem_Pop)
-        {
-            problem_code |= POP_EMPTY_STACK;
-            zero_elem_Pop = 0;
-        }
-        if(stack->size < 0)
-        {
-            problem_code |= NEGATIVE_SIZE;
-        }
-        if(stack->capacity < 0)
-        {
-            problem_code |= NEGATIVE_CAPACITY;
-        }
-        if(stack->capacity < stack->size)
-        {
-            problem_code |= CAP_SMALLER_SIZE;
-        }
-        if(stack->data == NULL)
-        {
-            problem_code |= MEM_ALLOC_FAIL;
-        }
+    { 
+        IF_ERR(stack->size < 0, NEGATIVE_SIZE);
+        
+        IF_ERR(stack->capacity < 0, NEGATIVE_CAPACITY);
+
+        IF_ERR(stack->capacity < stack->size, CAP_SMALLER_SIZE);
+        
+        IF_ERR(stack->data == NULL, MEM_ALLOC_FAIL);
+
+        IF_ERR(stack->L_canary != STACK_LEFT_CANARY, S_LEFT_CANARY_DEAD);
+
+        IF_ERR(stack->R_canary != STACK_RIGHT_CANARY, S_RIGHT_CANARY_DEAD);
+
+        
     }
 
     return problem_code;
 }
 
-void DecodeProblem(struct Stack *stack, int problem_code) 
+void DecodeProblem(struct Stack *stack, int problem_code)  //Maybe macros? find best way for errors with %
 {
-    if(problem_code &= STACK_NULL)
+    if(problem_code & STACK_NULL)
     {
         fprintf(logfile, "STACK IS NULL\n");
     }
-    if(problem_code &= NEGATIVE_SIZE)
+    if(problem_code & NEGATIVE_SIZE)
     {
         fprintf(logfile, "Stack size cannot be negative. [stack.size = %d]\n", stack->size);
     }
-    if(problem_code &= NEGATIVE_CAPACITY)
+    if(problem_code & NEGATIVE_CAPACITY)
     {
         fprintf(logfile, "Stack capacity cannot be negative. [stack.capacity = %d]\n", stack->capacity);
     }
-    if(problem_code &= CAP_SMALLER_SIZE)
+    if(problem_code & CAP_SMALLER_SIZE)
     {
         fprintf(logfile, "Stack capacity cannot be smaller than size.\n   [stack.capacity = %d]\n   [stack.size = %d]\n",
                                                                             stack->capacity      ,    stack->size);
     }
-    if(problem_code &= POP_EMPTY_STACK)
+    if(problem_code & POP_EMPTY_STACK)
     {
         fprintf(logfile, "You are trying to pop nothing.\n"); // xz kak opisat
     }
-    if(problem_code &= MEM_ALLOC_FAIL)
+    if(problem_code & MEM_ALLOC_FAIL)
     {
         fprintf(logfile, "Failed to allocate memory for stack.\n");
+    }
+    if(problem_code & S_LEFT_CANARY_DEAD)
+    {
+        fprintf(logfile, "Left canary attacked! (stack struct)\n");
+    }
+    if(problem_code & S_RIGHT_CANARY_DEAD)
+    {
+        fprintf(logfile, "Right canary attacked! (stack struct)\n");
     }
 }
 
@@ -192,10 +228,9 @@ void StackDump(struct Stack *stack, int problem_code) // ***********//
         fprintf(logfile, "=====================\n");
         fprintf(logfile, "%s at %s (%d):\n"                         "Stack[%p](%s) \"%s\" at main()\n", 
   stack->action_funcname ,stack->file_action, stack->line_action,     stack, (problem_code ? "ERROR" : "ok"), stack->stackname);
-        if(problem_code)
+        // if(problem_code)
         {
             DecodeProblem(stack, problem_code); 
-
 
             fprintf(logfile, "%s(%d)\n", stack->file_ctor, stack->line_ctor);
 
@@ -219,19 +254,25 @@ void StackPrint(struct Stack *stack)
 {
     for(int i = 0; i < stack->capacity; i++)
     {
-        char        in_stack    = ' ';
+        char        in_stack    =   ' ';
         const char *isPOISONED  = "(POISON)";
         const char *notPOISONED = " "; 
+        const char *isCANARY    = "(CANARY)";
         const char *situation   = isPOISONED;
 
-        if (stack->data[i] != POISON)
+        if(stack->data[i] == DATA_LEFT_CANARY || stack->data[i] == DATA_RIGHT_CANARY)
+        {
+            in_stack = '#';
+            situation = isCANARY;
+        }
+        else if(stack->data[i] != POISON)
         {
             in_stack = '*';
             situation = notPOISONED;
         }
 
         fprintf(logfile, "\t\t%c[%d] = %d%s\n", in_stack, i, stack->data[i], situation);
-     }    
+    }    
 }
 
 
