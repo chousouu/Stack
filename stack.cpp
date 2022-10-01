@@ -2,9 +2,24 @@
 static FILE *logfile = NULL;
 int err_code = 0;
 
+static long unsigned HashDataCounter(void *data, int len)
+{
+    char *datawalker = (char*)data;
+    int hash_counter = 0;
+    
+    while (datawalker - (char*)data < len)
+    {
+        hash_counter += *datawalker++;
+    }
+    return hash_counter;
+}
+
 static int *PoisonStack(int start, int max)
 {
-    int* allocate =(int*)calloc(max, sizeof(int));
+    int* allocate =(int*)calloc(max + 1, sizeof(int));
+    *allocate++ = DATA_LEFT_CANARY;
+    
+    allocate[max] = DATA_RIGHT_CANARY;
 
     for(int i = start; i < max; i++)
     {
@@ -16,6 +31,7 @@ static int *PoisonStack(int start, int max)
 
 static int StackResize(struct Stack *stack, bool mode)
 {    
+    printf("ENTERED STACKRESIZE\n");
     if(mode == STACK_DECREASE)
     {   
         stack->capacity /= CAP_MULTIPLIER;    
@@ -24,9 +40,9 @@ static int StackResize(struct Stack *stack, bool mode)
     {
         stack->capacity *= CAP_MULTIPLIER;
     }  
-
+    printf("creating temp\n");
     int *temp = (int*)realloc(stack->data, sizeof(int) * stack->capacity); 
-
+    printf("temp %p \n", temp);
     if(temp == NULL)
     {
         printf("Cannot allocate memory\n");
@@ -34,12 +50,11 @@ static int StackResize(struct Stack *stack, bool mode)
     }
 
     stack->data = temp;
-
+    printf("filling with poison\n");
     for(int i = stack->size; i < stack->capacity; i++)
     {
         stack->data[i] = POISON; 
     }
-
     return 0; // on success
 }
 
@@ -50,13 +65,19 @@ void StackCtor_(struct Stack *stack, int capacity VAR_INFO)
         #ifdef CANARY_PROT
         .L_canary = STACK_LEFT_CANARY,
         #endif //CANARY_PROT
-            .data = (int*)PoisonStack(0, capacity),
+
+        .data = (int*)PoisonStack(0, capacity),
+        
+        .capacity = capacity,
+        .size = 0,
+
         #ifdef CANARY_PROT
         .R_canary = STACK_RIGHT_CANARY,
         #endif //CANARY_PROT        
-        .capacity = capacity,
-        .size = 0,
-        .capmode = STACK_INCREASE,
+        
+        #ifdef HASH_PROT
+        .HashValueData = 0,
+        #endif //HASH_PROT 
 
         #ifdef DEBUG_INFO
         .line_ctor = line,
@@ -65,24 +86,21 @@ void StackCtor_(struct Stack *stack, int capacity VAR_INFO)
         .file_action = NULL, 
         .action_funcname = NULL,
         .stackname = name,
-        #endif//DEBUG_INFO
-    
+        #endif //DEBUG_INFO
     };
 
-    #ifdef CANARY_PROT
-    stack->size = 1;
-    stack->data[0] = DATA_LEFT_CANARY;
-    stack->data[capacity - 1] = DATA_RIGHT_CANARY;
-    #endif //CANARY_PROT
+    stack->HashValueData = HashDataCounter(stack->data, stack->capacity * sizeof(int));
 }
 
 int StackPush(struct Stack *stack, int number) 
 {
     Stack_OK(stack);
-
+    printf("%d == %d\n",stack->size, stack->capacity - 1);
     if(stack->size == stack->capacity - 1)
     {
+        printf("size = cap - 1\n");
         int err_resize = StackResize(stack, STACK_INCREASE);
+        printf("err resize %d\n", err_resize);
         if(err_resize == MEM_ALLOC_FAIL)
         { 
             StackDump(stack, err_resize);
@@ -90,13 +108,15 @@ int StackPush(struct Stack *stack, int number)
         }
 
         #ifdef CANARY_PROT
-            stack->data[stack->capacity - 1] = DATA_RIGHT_CANARY;
-        #endif//CANARY_PROT
+            *(stack->data - 1) = DATA_LEFT_CANARY;
+            stack->data[stack->capacity] = DATA_RIGHT_CANARY;
+        #endif// CANARY_PROT
     }
 
     stack->data[stack->size] = number;
-    stack->size++; 
+    stack->size++;
 
+    stack->HashValueData = HashDataCounter(stack->data, stack->capacity * sizeof(int));
     Stack_OK(stack);
     return 1; 
 }
@@ -105,27 +125,19 @@ int StackPush(struct Stack *stack, int number)
 
 int StackPop(Stack *stack, int *error_code)
 {
-        Stack_OK(stack);
-    
-    #ifdef CANARY_PROT
-    if(stack->size < 2 && (stack->data[stack->size] == POISON || stack->data[stack->size] == DATA_LEFT_CANARY )) 
-    #else 
+    printf("%d %d\n", stack->size, stack->data[stack->size]);
+    Stack_OK(stack);
     if(stack->size < 1 && (stack->data[stack->size] == POISON))
-    #endif //CANARY_PROT
     {
+        printf("ENTERED\n");
         *error_code = POP_EMPTY_STACK;
         StackDump(stack, *error_code);
         return *error_code;
     }
 
-    if(stack->size == (stack->capacity / CAP_MULTIPLIER))
+    if(stack->size == (stack->capacity / 4 - 1))
     {
-        stack->capmode = STACK_DECREASE;
-    }
-    
-    if(stack->size == (stack->capacity / CAP_MULTIPLIER) / 2 - 1 && stack->capmode == STACK_DECREASE)
-    {
-        int err_resize = StackResize(stack, stack->capmode);
+        int err_resize = StackResize(stack, STACK_DECREASE);
         if(err_resize  == MEM_ALLOC_FAIL)
         {
             *error_code = err_resize; 
@@ -133,26 +145,30 @@ int StackPop(Stack *stack, int *error_code)
             return *error_code;
         }
         #ifdef CANARY_PROT
-            stack->data[stack->capacity - 1] = DATA_RIGHT_CANARY;
+            *(stack->data - 1) = DATA_LEFT_CANARY;
+            stack->data[stack->capacity] = DATA_RIGHT_CANARY;
         #endif//CANARY_PROT
-        stack->capmode = STACK_INCREASE;
     }
 
     stack->size--; 
     int temp = stack->data[stack->size];
     stack->data[stack->size] = POISON;
 
-        Stack_OK(stack);
-    
+    stack->HashValueData = HashDataCounter(stack->data, stack->capacity * sizeof(int));
+
+    Stack_OK(stack);
+        
     return temp;
 }
 
+#ifdef DEBUG_INFO 
 void GetActionInfo(struct Stack *stack VAR_INFO)
 {
     stack->line_action = line; 
     stack->file_action = file;
     stack->action_funcname = name;
 }
+#endif// DEBUG_INFO
 
 int StackVerify(struct Stack *stack) 
 {
@@ -165,7 +181,7 @@ int StackVerify(struct Stack *stack)
         return problem_code; 
     }
     else
-    { 
+    {
         IF_ERR(stack->size < 0, NEGATIVE_SIZE);
         
         IF_ERR(stack->capacity < 0, NEGATIVE_CAPACITY);
@@ -178,12 +194,13 @@ int StackVerify(struct Stack *stack)
 
         IF_ERR(stack->R_canary != STACK_RIGHT_CANARY, S_RIGHT_CANARY_DEAD);
 
-        IF_ERR(stack->data[0] != DATA_LEFT_CANARY, D_LEFT_CANARY_DEAD);
+        IF_ERR(*(stack->data - 1) != DATA_LEFT_CANARY, D_LEFT_CANARY_DEAD);
 
-        IF_ERR(stack->data[stack->capacity - 1] != DATA_RIGHT_CANARY, D_RIGHT_CANARY_DEAD);
+        IF_ERR(stack->data[stack->capacity] != DATA_RIGHT_CANARY, D_RIGHT_CANARY_DEAD);
 
+        IF_ERR(stack->HashValueData != HashDataCounter(stack->data, stack->capacity * sizeof(int)), HASH_DEAD);
     }
-
+//
     return problem_code;
 }
 
@@ -208,7 +225,7 @@ void DecodeProblem(struct Stack *stack, int problem_code)  //Maybe macros? find 
     }
     if(problem_code & POP_EMPTY_STACK)
     {
-        fprintf(logfile, "You are trying to pop nothing.\n"); // xz kak opisat
+        fprintf(logfile, "ERROR : ZERO STACK->SIZE POP.\n"); // xz kak opisat
     }
     if(problem_code & MEM_ALLOC_FAIL)
     {
@@ -230,6 +247,11 @@ void DecodeProblem(struct Stack *stack, int problem_code)  //Maybe macros? find 
     {
         fprintf(logfile, "Right canary attacked! (data)\n");
     }
+    if(problem_code & HASH_DEAD)
+    {
+        fprintf(logfile, "HASH CHANGED\n");
+        // #define FPRINT(...) fprintf(" sdfsdf %d %d", __VA_ARGS__)
+    }
 }
 
 void StackDump(struct Stack *stack, int problem_code) // ***********// 
@@ -245,7 +267,7 @@ void StackDump(struct Stack *stack, int problem_code) // ***********//
         fprintf(logfile, "=====================\n");
         fprintf(logfile, "%s at %s (%d):\n"                         "Stack[%p](%s) \"%s\" at main()\n", 
   stack->action_funcname ,stack->file_action, stack->line_action,     stack, (problem_code ? "ERROR" : "ok"), stack->stackname);
-        // if(problem_code)
+     //   if(problem_code)
         {
             DecodeProblem(stack, problem_code); 
 
@@ -269,7 +291,7 @@ void StackDump(struct Stack *stack, int problem_code) // ***********//
 
 void StackPrint(struct Stack *stack)
 {
-    for(int i = 0; i < stack->capacity; i++)
+    for(int i = -1; i <= stack->capacity; i++)
     {
         char        in_stack    =   ' ';
         const char *isPOISONED  = "(POISON)";
@@ -277,7 +299,7 @@ void StackPrint(struct Stack *stack)
         const char *isCANARY    = "(CANARY)";
         const char *situation   = isPOISONED;
 
-        if(stack->data[i] == DATA_LEFT_CANARY || stack->data[i] == DATA_RIGHT_CANARY)
+        if(*(stack->data + i) == DATA_LEFT_CANARY || *(stack->data + i) == DATA_RIGHT_CANARY)
         {
             in_stack = '#';
             situation = isCANARY;
@@ -288,7 +310,7 @@ void StackPrint(struct Stack *stack)
             situation = notPOISONED;
         }
 
-        fprintf(logfile, "\t\t%c[%d] = %d%s\n", in_stack, i, stack->data[i], situation);
+        fprintf(logfile, "\t\t%c[%d] = %d%s\n", in_stack, i, *(stack->data + i), situation);
     }    
 }
 
