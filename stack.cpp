@@ -1,5 +1,5 @@
 #include "stack.h"
-static FILE *logfile = NULL;
+static FILE *logfile = fopen("log.txt", "a");;
 int err_code = 0;
 
 static long unsigned HashDataCounter(void *data, int len)
@@ -14,24 +14,24 @@ static long unsigned HashDataCounter(void *data, int len)
     return hash_counter;
 }
 
-static int *PoisonStack(int start, int max)
+static int *PoisonAllocStack(int start, int max)
 {
-    int* allocate =(int*)calloc(max + 1, sizeof(int));
-    *allocate++ = DATA_LEFT_CANARY;
-    
-    allocate[max] = DATA_RIGHT_CANARY;
+    #ifdef CANARY_PROT
+        int* buff =(int*)calloc(max + 2, sizeof(int)); // 2 canaries
+        if(buff == NULL)
+        {
+            printf("Cannot allocate memory\n");
+        }   
+        buff++;
+    #endif
 
-    for(int i = start; i < max; i++)
-    {
-        allocate[i] = POISON;
-    }
+    FILL_POISON(buff, start, max);
 
-    return allocate;
+    return buff;
 }
 
 static int StackResize(struct Stack *stack, bool mode)
 {    
-    printf("ENTERED STACKRESIZE\n");
     if(mode == STACK_DECREASE)
     {   
         stack->capacity /= CAP_MULTIPLIER;    
@@ -40,21 +40,32 @@ static int StackResize(struct Stack *stack, bool mode)
     {
         stack->capacity *= CAP_MULTIPLIER;
     }  
-    printf("creating temp\n");
-    int *temp = (int*)realloc(stack->data, sizeof(int) * stack->capacity); 
-    printf("temp %p \n", temp);
-    if(temp == NULL)
-    {
-        printf("Cannot allocate memory\n");
-        return MEM_ALLOC_FAIL; 
-    }
+    
+    #ifdef CANARY_PROT
+        int *buff = (int*)realloc(stack->data - 1, stack->capacity + 2 * sizeof(stack->L_canary));
+        if(buff == NULL)
+        {
+            printf("Cannot allocate memory\n");
+            return MEM_ALLOC_FAIL; 
+        }   
+            stack->data = buff;
+            *stack->data = DATA_LEFT_CANARY;
+            stack->data++;
+            stack->data[stack->capacity] = DATA_RIGHT_CANARY;
+    #else 
+        int *buff = (int*)realloc(stack->data - 1, stack->capacity);
+        if(buff == NULL)
+        {
+            printf("Cannot allocate memory\n");
+            return MEM_ALLOC_FAIL; 
+        }
+        stack->data = buff;
+        stack->data++;
 
-    stack->data = temp;
-    printf("filling with poison\n");
-    for(int i = stack->size; i < stack->capacity; i++)
-    {
-        stack->data[i] = POISON; 
-    }
+    #endif
+
+    FILL_POISON(stack->data, stack->size, stack->capacity);
+
     return 0; // on success
 }
 
@@ -66,7 +77,7 @@ void StackCtor_(struct Stack *stack, int capacity VAR_INFO)
         .L_canary = STACK_LEFT_CANARY,
         #endif //CANARY_PROT
 
-        .data = (int*)PoisonStack(0, capacity),
+        .data = (int*)PoisonAllocStack(0, capacity),
         
         .capacity = capacity,
         .size = 0,
@@ -88,6 +99,8 @@ void StackCtor_(struct Stack *stack, int capacity VAR_INFO)
         .stackname = name,
         #endif //DEBUG_INFO
     };
+    *(stack->data - 1) = DATA_LEFT_CANARY;
+    stack->data[stack->capacity] = DATA_RIGHT_CANARY;
 
     stack->HashValueData = HashDataCounter(stack->data, stack->capacity * sizeof(int));
 }
@@ -95,29 +108,29 @@ void StackCtor_(struct Stack *stack, int capacity VAR_INFO)
 int StackPush(struct Stack *stack, int number) 
 {
     Stack_OK(stack);
-    printf("%d == %d\n",stack->size, stack->capacity - 1);
     if(stack->size == stack->capacity - 1)
     {
-        printf("size = cap - 1\n");
         int err_resize = StackResize(stack, STACK_INCREASE);
-        printf("err resize %d\n", err_resize);
+
         if(err_resize == MEM_ALLOC_FAIL)
         { 
             StackDump(stack, err_resize);
             return err_resize;
         }
-
+        
         #ifdef CANARY_PROT
             *(stack->data - 1) = DATA_LEFT_CANARY;
             stack->data[stack->capacity] = DATA_RIGHT_CANARY;
         #endif// CANARY_PROT
     }
-
+    
     stack->data[stack->size] = number;
     stack->size++;
 
-    stack->HashValueData = HashDataCounter(stack->data, stack->capacity * sizeof(int));
+    CHECK_HASH;
+
     Stack_OK(stack);
+
     return 1; 
 }
 
@@ -125,11 +138,10 @@ int StackPush(struct Stack *stack, int number)
 
 int StackPop(Stack *stack, int *error_code)
 {
-    printf("%d %d\n", stack->size, stack->data[stack->size]);
     Stack_OK(stack);
+
     if(stack->size < 1 && (stack->data[stack->size] == POISON))
     {
-        printf("ENTERED\n");
         *error_code = POP_EMPTY_STACK;
         StackDump(stack, *error_code);
         return *error_code;
@@ -145,7 +157,6 @@ int StackPop(Stack *stack, int *error_code)
             return *error_code;
         }
         #ifdef CANARY_PROT
-            *(stack->data - 1) = DATA_LEFT_CANARY;
             stack->data[stack->capacity] = DATA_RIGHT_CANARY;
         #endif//CANARY_PROT
     }
@@ -154,7 +165,7 @@ int StackPop(Stack *stack, int *error_code)
     int temp = stack->data[stack->size];
     stack->data[stack->size] = POISON;
 
-    stack->HashValueData = HashDataCounter(stack->data, stack->capacity * sizeof(int));
+    CHECK_HASH;
 
     Stack_OK(stack);
         
@@ -200,7 +211,7 @@ int StackVerify(struct Stack *stack)
 
         IF_ERR(stack->HashValueData != HashDataCounter(stack->data, stack->capacity * sizeof(int)), HASH_DEAD);
     }
-//
+
     return problem_code;
 }
 
@@ -267,7 +278,7 @@ void StackDump(struct Stack *stack, int problem_code) // ***********//
         fprintf(logfile, "=====================\n");
         fprintf(logfile, "%s at %s (%d):\n"                         "Stack[%p](%s) \"%s\" at main()\n", 
   stack->action_funcname ,stack->file_action, stack->line_action,     stack, (problem_code ? "ERROR" : "ok"), stack->stackname);
-     //   if(problem_code)
+       if(problem_code)
         {
             DecodeProblem(stack, problem_code); 
 
@@ -284,8 +295,9 @@ void StackDump(struct Stack *stack, int problem_code) // ***********//
             fprintf(logfile, "}\n");
             
         }
-            fclose(logfile);
+        fclose(logfile);
     }
+
 
 }
 
@@ -318,10 +330,7 @@ void StackPrint(struct Stack *stack)
 
 void StackDtor(struct Stack *stack)
 {
-    for(int i = 0; i < stack->capacity; i++)
-    {
-       stack->data[i] = POISON; 
-    }
+    FILL_POISON(stack->data, 0, stack->capacity);
 
     stack->size = 0;
     stack->capacity = 0;

@@ -7,6 +7,7 @@
 
 #define DEBUG_INFO
 #define CANARY_PROT
+#define HASH_PROT
 
 enum Options 
 {
@@ -17,17 +18,17 @@ enum Options
 
 enum ERRORS
 {
-    POP_EMPTY_STACK     = 1,
-    NEGATIVE_SIZE       = 2,
-    NEGATIVE_CAPACITY   = 4,
-    CAP_SMALLER_SIZE    = 8,
-    STACK_NULL          = 16,
-    MEM_ALLOC_FAIL      = 32,
-    S_LEFT_CANARY_DEAD  = 64,
-    S_RIGHT_CANARY_DEAD = 128,
-    D_LEFT_CANARY_DEAD  = 256,
-    D_RIGHT_CANARY_DEAD = 512,
-
+    POP_EMPTY_STACK     = 1 << 0,
+    NEGATIVE_SIZE       = 1 << 1,
+    NEGATIVE_CAPACITY   = 1 << 2,
+    CAP_SMALLER_SIZE    = 1 << 3 ,
+    STACK_NULL          = 1 << 4,
+    MEM_ALLOC_FAIL      = 1 << 5,
+    S_LEFT_CANARY_DEAD  = 1 << 6,
+    S_RIGHT_CANARY_DEAD = 1 << 7,
+    D_LEFT_CANARY_DEAD  = 1 << 8,
+    D_RIGHT_CANARY_DEAD = 1 << 9,
+    HASH_DEAD           = 1 << 10,
 };
 
 enum HexConst 
@@ -38,21 +39,33 @@ enum HexConst
     DATA_LEFT_CANARY   = 0xDBE4   , 
     DATA_RIGHT_CANARY  = 0xDAF1E91, 
 };
+
 #ifdef CANARY_PROT
     #define  ON_CANARY_PROT(SIDE) int SIDE##_canary;
 #else 
     #define ON_CANARY_PROT(SIDE) 
 #endif //CANARY_PROT
 
+#ifdef HASH_PROT
+    #define  ON_HASH_PROT \
+    unsigned long HashValueData;
+    //unsigned long HashValueStruct;
+#else 
+    #define ON_HASH_PROT 
+#endif //HASH_PROT
+
  
 struct Stack
 {
     ON_CANARY_PROT(L)
+
     int *data;
-    ON_CANARY_PROT(R)
     int capacity;
     int size;
-    bool capmode;
+    
+    ON_CANARY_PROT(R)
+
+    ON_HASH_PROT
 
     #ifdef DEBUG_INFO
     int          line_ctor;
@@ -65,8 +78,19 @@ struct Stack
 };
 
 
-#define IF_ERR(ERROR, ERRCODE) if(ERROR) problem_code |= ERRCODE 
+#define IF_ERR(ERROR, ERRCODE) do { if((ERROR)) problem_code |= (ERRCODE); } while(0); 
 
+#define FILL_POISON(arr, start, end)     \
+        for(int i = start; i < end; i++) \
+        {                                \
+            arr[i] = POISON;             \
+        }                                
+
+#ifdef HASH_PROT
+    #define CHECK_HASH stack->HashValueData = HashDataCounter(stack->data, stack->capacity * sizeof(int))
+#else
+    #define CHECK_HASH 
+#endif
 
 #ifdef DEBUG_INFO
     #define VAR_INFO , int line, const char* file, const char *name
@@ -74,17 +98,17 @@ struct Stack
     #define Stack_OK(stack) \
     err_code = StackVerify(stack); \
     StackDump(stack, err_code); \
-    if(err_code) return err_code
+    if(err_code) return err_code;
 
     #define StackCtor(stack, X) StackCtor_(&stack, X, __LINE__, __FILE__, #stack)
     
     #define StackPush_(stack, X) \
     GetActionInfo(&stack, __LINE__, __FILE__, "StackPush()"); \
-    StackPush(&stack, X)    
+    StackPush(&stack, X) 
 
     #define StackPop_(stack, err) \
     GetActionInfo(&stack, __LINE__, __FILE__, "StackPop()"); \
-    StackPop(&stack, &err)
+    StackPop(&stack, &err) 
 #else 
     #define VAR_INFO 
     #define Stack_OK(stack) 
