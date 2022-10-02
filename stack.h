@@ -19,25 +19,27 @@ enum Options
 enum ERRORS
 {
     POP_EMPTY_STACK     = 1 << 0,
-    NEGATIVE_SIZE       = 1 << 1,
-    NEGATIVE_CAPACITY   = 1 << 2,
-    CAP_SMALLER_SIZE    = 1 << 3 ,
-    STACK_NULL          = 1 << 4,
-    MEM_ALLOC_FAIL      = 1 << 5,
-    S_LEFT_CANARY_DEAD  = 1 << 6,
-    S_RIGHT_CANARY_DEAD = 1 << 7,
-    D_LEFT_CANARY_DEAD  = 1 << 8,
-    D_RIGHT_CANARY_DEAD = 1 << 9,
-    HASH_DEAD           = 1 << 10,
+    TOP_EMPTY_STACK     = 1 << 1 ,
+    NEGATIVE_SIZE       = 1 << 2 ,
+    NEGATIVE_CAPACITY   = 1 << 3 ,
+    CAP_SMALLER_SIZE    = 1 << 4 ,
+    STACK_NULL          = 1 << 5 ,
+    MEM_ALLOC_FAIL      = 1 << 6 ,
+    S_LEFT_CANARY_DEAD  = 1 << 7 ,
+    S_RIGHT_CANARY_DEAD = 1 << 8 ,
+    D_LEFT_CANARY_DEAD  = 1 << 9 ,
+    D_RIGHT_CANARY_DEAD = 1 << 10,
+    HASH_DATA_DEAD      = 1 << 11,
+    HASH_STRUCT_DEAD    = 1 << 12,
 };
 
 enum HexConst 
 {
-    POISON             = 0x91DF00 ,
-    STACK_LEFT_CANARY  = 0x5BE4   ,
-    STACK_RIGHT_CANARY = 0x5AF1E91,
-    DATA_LEFT_CANARY   = 0xDBE4   , 
-    DATA_RIGHT_CANARY  = 0xDAF1E91, 
+    POISON              = 0x91DF00 ,
+    STACK_LEFT_CANARY   = 0x5BE4   ,
+    STACK_RIGHT_CANARY  = 0x5AF1E91,
+    DATA_LEFT_CANARY    = 0xDBE4   , 
+    DATA_RIGHT_CANARY   = 0xDAF1E91, 
 };
 
 #ifdef CANARY_PROT
@@ -47,9 +49,9 @@ enum HexConst
 #endif //CANARY_PROT
 
 #ifdef HASH_PROT
-    #define  ON_HASH_PROT \
-    unsigned long HashValueData;
-    //unsigned long HashValueStruct;
+    #define  ON_HASH_PROT         \
+    unsigned long HashValueData;  \
+    unsigned long HashValueStruct;
 #else 
     #define ON_HASH_PROT 
 #endif //HASH_PROT
@@ -60,8 +62,8 @@ struct Stack
     ON_CANARY_PROT(L)
 
     int *data;
-    int capacity;
-    int size;
+    int  capacity;
+    int  size;
     
     ON_CANARY_PROT(R)
 
@@ -78,7 +80,9 @@ struct Stack
 };
 
 
-#define IF_ERR(ERROR, ERRCODE) do { if((ERROR)) problem_code |= (ERRCODE); } while(0); 
+#define IF_ERR(ERROR, ERRCODE) do { if((ERROR)) problem_code |= (ERRCODE); } while(0)
+
+#define FPRINT_ERR(FILENAME, ERRCODE, ...) if(problem_code & ERRCODE)fprintf(FILENAME, __VA_ARGS__)
 
 #define FILL_POISON(arr, start, end)     \
         for(int i = start; i < end; i++) \
@@ -87,45 +91,55 @@ struct Stack
         }                                
 
 #ifdef HASH_PROT
-    #define CHECK_HASH stack->HashValueData = HashDataCounter(stack->data, stack->capacity * sizeof(int))
+    #define GET_DATA_HASH stack->HashValueData = HashCounter(stack->data, stack->capacity * sizeof(int))
+
+    #define GET_STRUCT_HASH                                                                                         \
+    stack->HashValueStruct = HashCounter(stack, sizeof(stack->size) + sizeof(stack->capacity) + sizeof(stack->data))
 #else
-    #define CHECK_HASH 
+    #define GET_DATA_HASH  
+    #define GET_STRUCT_HASH   
 #endif
 
 #ifdef DEBUG_INFO
     #define VAR_INFO , int line, const char* file, const char *name
     
-    #define Stack_OK(stack) \
+    #define Stack_OK(stack)        \
     err_code = StackVerify(stack); \
-    StackDump(stack, err_code); \
+    StackDump(stack, err_code);    \
     if(err_code) return err_code;
 
-    #define StackCtor(stack, X) StackCtor_(&stack, X, __LINE__, __FILE__, #stack)
+    #define StackCtor_(stack, X)   StackCtor(&stack, X, __LINE__, __FILE__, #stack)
     
-    #define StackPush_(stack, X) \
+    #define StackPush_(stack, X)                              \
     GetActionInfo(&stack, __LINE__, __FILE__, "StackPush()"); \
-    StackPush(&stack, X) 
+    StackPush    (&stack, X) 
 
-    #define StackPop_(stack, err) \
-    GetActionInfo(&stack, __LINE__, __FILE__, "StackPop()"); \
-    StackPop(&stack, &err) 
+    #define StackPop_(stack, err)                             \
+    GetActionInfo(&stack, __LINE__, __FILE__, "StackPop()");  \
+    StackPop     (&stack, &err)
+
+    #define StackTop_(stack, err)                             \
+    GetActionInfo(&stack, __LINE__, __FILE__, "StackTop()");  \
+    StackTop     (&stack, &err) 
 #else 
     #define VAR_INFO 
     #define Stack_OK(stack) 
-    #define StackCtor(stack, X)   StackCtor_(&stack, X)
+    #define StackCtor_(stack, X)  StackCtor(&stack, X)
     #define StackPush_(stack, X)  StackPush(&stack, X) 
     #define StackPop_(stack, err) StackPop(&stack, &err)    
 #endif
 
 
 
-void StackCtor_ (struct Stack *stack, int number VAR_INFO);
-void GetActionInfo(struct Stack *stack VAR_INFO);
-void DecodeProblem(struct Stack *stack, int problem_code);
-int  StackPush  (struct Stack *stack, int number); 
-int StackPop(Stack *stack, int *err_code);
-void StackDump  (struct Stack *stack, int problem_code);
-void StackDtor  (struct Stack *stack);
-int  StackVerify(struct Stack *stack);
-void StackPrint (struct Stack *stack);
+void StackCtor    (struct Stack *stack, int number VAR_INFO);
+void GetActionInfo(struct Stack *stack VAR_INFO)            ;
+void DecodeProblem(struct Stack *stack, int problem_code)   ;
+int  StackPush    (struct Stack *stack, int number)         ; 
+int  StackPop     (Stack *stack, int *err_code)             ;
+void StackDump    (struct Stack *stack, int problem_code)   ;
+void StackDtor    (struct Stack *stack)                     ;
+int  StackTop     (struct Stack *stack, int *error_code)    ;
+int  StackVerify  (struct Stack *stack)                     ;
+void StackPrint   (struct Stack *stack)                     ;
+
 #endif //STACK_H

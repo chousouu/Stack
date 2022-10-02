@@ -79,7 +79,7 @@ static int StackResize(struct Stack *stack, bool mode)
     return 0; // on success
 }
 
-void StackCtor_(struct Stack *stack, int capacity VAR_INFO)
+void StackCtor(struct Stack *stack, int capacity VAR_INFO)
 {
     *stack = 
     {
@@ -254,56 +254,34 @@ int StackVerify(struct Stack *stack)
 
 void DecodeProblem(struct Stack *stack, int problem_code)
 {
-    if(problem_code & STACK_NULL)
-    {
-        fprintf(logfile, "STACK IS NULL\n");
-    }
-    if(problem_code & NEGATIVE_SIZE)
-    {
-        fprintf(logfile, "Stack size cannot be negative. [stack.size = %d]\n", stack->size);
-    }
-    if(problem_code & NEGATIVE_CAPACITY)
-    {
-        fprintf(logfile, "Stack capacity cannot be negative. [stack.capacity = %d]\n", stack->capacity);
-    }
-    if(problem_code & CAP_SMALLER_SIZE)
-    {
-        fprintf(logfile, "Stack capacity cannot be smaller than size.\n   [stack.capacity = %d]\n   [stack.size = %d]\n",
-                                                                            stack->capacity      ,    stack->size);
-    }
-    if(problem_code & TOP_EMPTY_STACK)
-    {
-        fprintf(logfile, "ERROR : ZERO STACK->SIZE TOP.\n"); 
-    }
-    if(problem_code & POP_EMPTY_STACK)
-    {
-        fprintf(logfile, "ERROR : ZERO STACK->SIZE POP.\n"); 
-    }
-    if(problem_code & MEM_ALLOC_FAIL)
-    {
-        fprintf(logfile, "Failed to allocate memory for stack.\n");
-    }
+    FPRINT_ERR(logfile, STACK_NULL          , "STACK IS NULL\n");
+
+    FPRINT_ERR(logfile, NEGATIVE_SIZE       , "Stack size cannot be negative. [stack.size = %d]\n", stack->size);
+
+    FPRINT_ERR(logfile, NEGATIVE_CAPACITY   , "Stack capacity cannot be negative. [stack.capacity = %d]\n", stack->capacity);
+
+    FPRINT_ERR(logfile, CAP_SMALLER_SIZE    , "Stack capacity cannot be smaller than size.\n"
+                                           "\t[stack.capacity = %d]\n   [stack.size = %d]\n", 
+                                                  stack->capacity      ,    stack->size);
+
+    FPRINT_ERR(logfile, TOP_EMPTY_STACK     , "ERROR : ZERO STACK->SIZE TOP.\n");
+
+    FPRINT_ERR(logfile, POP_EMPTY_STACK     , "ERROR : ZERO STACK->SIZE POP.\n");
+
+    FPRINT_ERR(logfile, MEM_ALLOC_FAIL      , "Failed to allocate memory for stack.\n");
+
     #ifdef CANARY_PROT
-    if(problem_code & S_LEFT_CANARY_DEAD)
-    {
-        fprintf(logfile, "Left canary attacked! (stack struct)\n");
-    }
-    if(problem_code & S_RIGHT_CANARY_DEAD)
-    {
-        fprintf(logfile, "Right canary attacked! (stack struct)\n");
-    }
-    if(problem_code & D_LEFT_CANARY_DEAD)
-    {
-        fprintf(logfile, "Left canary attacked! (data)\n");
-    }
-    if(problem_code & D_RIGHT_CANARY_DEAD)
-    {
-        fprintf(logfile, "Right canary attacked! (data)\n");
-    }
+    FPRINT_ERR(logfile, S_LEFT_CANARY_DEAD  , "Left canary attacked! (stack struct)\n");
+
+    FPRINT_ERR(logfile, S_RIGHT_CANARY_DEAD , "Right canary attacked! (stack struct)\n");
+
+    FPRINT_ERR(logfile, D_LEFT_CANARY_DEAD  , "Left canary attacked! (data)\n");
+
+    FPRINT_ERR(logfile, D_RIGHT_CANARY_DEAD , "Right canary attacked! (data)\n");
     #endif// CANARY_PROT
 
     #ifdef HASH_PROT
-        FPRINT_ERR(logfile, HASH_DATA_DEAD, "HASH DATA CHANGED\n");
+        FPRINT_ERR(logfile, HASH_DATA_DEAD  , "HASH DATA CHANGED\n");
         FPRINT_ERR(logfile, HASH_STRUCT_DEAD, "HASH STRUCT CHANGED\n");
     #endif// HASH_PROT
 }

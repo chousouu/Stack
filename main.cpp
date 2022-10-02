@@ -3,12 +3,13 @@
 int main()
 {
     Stack stack;
-    StackCtor(stack, 12);  
+    StackCtor_(stack, 12);  
 
     int err_code = 0;
-
-    //StackPop_(stack, err_code);
+    StackTop_(stack, err_code);
+    StackPop_(stack, err_code);
     StackPush_(stack, 0);
+    StackTop_(stack, err_code);
     StackPop_(stack, err_code);
     StackPush_(stack, 1);
     StackPush_(stack, 2);
@@ -23,63 +24,11 @@ int main()
     StackPush_(stack, 11);
     StackPush_(stack, 12);
     StackPush_(stack, 13);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
-    StackPush_(stack, 5);
+    for(int i = 0; i <= 13; i++)
+    {
+        StackPop_(stack, err_code);
+    }
     
     StackDtor(&stack); 
-    printf("done");
+    printf("done\n");
 }
