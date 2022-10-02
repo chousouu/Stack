@@ -1,19 +1,34 @@
 #include "stack.h"
 static FILE *logfile = NULL;
 
-#ifdef DEBUG_INFO
-int err_code = 0;
-#endif// DEBUG_INFO
-
 #ifdef HASH_PROT
 static long unsigned HashCounter(void *data, int len)
 {
+    unsigned long a = 0 , b = 0, c = 0;
+    unsigned int fool      = 0xAF00L;
+    unsigned int lightning = 1988  ;
+
     char *datawalker = (char*)data;
     int hash_counter = 0;
-    while (datawalker - (char*)data < len)
+    while (len > 4)
     {
-        hash_counter += *datawalker++;
+        a += fool++;
+        b += fool++;
+        c += fool++;
+
+        c = a << 2;
+        b = a << 3;
+        a = a << 1;
+        len -= 4;
     }
+
+    c += datawalker[2] << 24;
+    b += datawalker[1] << 16;
+    a += datawalker[0] << 8 ; 
+
+    hash_counter = a * (fool) + b * (fool + lightning) + c * (fool + 311);
+
+    hash_counter += (hash_counter << 3) | (hash_counter >> 2);
     return hash_counter;
 }
 #endif// HASH_PROT
@@ -26,10 +41,11 @@ static int *PoisonAllocStack(int start, int max)
     int size_calloc = max;
     #endif
 
-    int* buff =(int*)calloc(size_calloc, sizeof(int)); // 2 canaries
+    int* buff =(int*)calloc(size_calloc, sizeof(int));
     if(buff == NULL)
     {
         printf("Cannot allocate memory\n");
+        return buff;
     }   
     
     #ifdef CANARY_PROT
@@ -79,7 +95,7 @@ static int StackResize(struct Stack *stack, bool mode)
     return 0; // on success
 }
 
-void StackCtor(struct Stack *stack, int capacity VAR_INFO)
+int StackCtor(struct Stack *stack, int capacity VAR_INFO)
 {
     *stack = 
     {
@@ -111,12 +127,20 @@ void StackCtor(struct Stack *stack, int capacity VAR_INFO)
         #endif //DEBUG_INFO
     };
 
+    if(stack->data == NULL)
+    {
+        StackDump(stack, STACK_NULL);
+        return STACK_NULL;
+    }
+
     #ifdef CANARY_PROT
     *(stack->data - 1) = DATA_LEFT_CANARY;
     stack->data[stack->capacity] = DATA_RIGHT_CANARY;
     #endif// CANARY_PROT
     GET_STRUCT_HASH;
     GET_DATA_HASH;
+
+    return 0;
 }
 
 int StackPush(struct Stack *stack, int number) 
@@ -146,7 +170,7 @@ int StackPush(struct Stack *stack, int number)
 
     Stack_OK(stack);
 
-    return 1; 
+    return 0; 
 }
 
 int StackTop(struct Stack *stack, int *error_code)
@@ -159,9 +183,6 @@ int StackTop(struct Stack *stack, int *error_code)
         StackDump(stack, *error_code);
         return *error_code;
     }
-
-    GET_STRUCT_HASH;
-    GET_DATA_HASH;
 
     Stack_OK(stack);
         

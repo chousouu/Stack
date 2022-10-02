@@ -82,7 +82,7 @@ struct Stack
 
 #define IF_ERR(ERROR, ERRCODE) do { if((ERROR)) problem_code |= (ERRCODE); } while(0)
 
-#define FPRINT_ERR(FILENAME, ERRCODE, ...) if(problem_code & ERRCODE)fprintf(FILENAME, __VA_ARGS__)
+#define FPRINT_ERR(FILENAME, ERRCODE, ...) do { if(problem_code & ERRCODE)fprintf(FILENAME, __VA_ARGS__); } while(0) 
 
 #define FILL_POISON(arr, start, end)     \
         for(int i = start; i < end; i++) \
@@ -104,9 +104,13 @@ struct Stack
     #define VAR_INFO , int line, const char* file, const char *name
     
     #define Stack_OK(stack)        \
+    do                             \
+    {                              \
+    int err_code = 0;              \
     err_code = StackVerify(stack); \
     StackDump(stack, err_code);    \
-    if(err_code) return err_code;
+    if(err_code) return err_code;  \
+    } while(0)
 
     #define StackCtor_(stack, X)   StackCtor(&stack, X, __LINE__, __FILE__, #stack)
     
@@ -131,15 +135,17 @@ struct Stack
 
 
 
-void StackCtor    (struct Stack *stack, int number VAR_INFO);
-void GetActionInfo(struct Stack *stack VAR_INFO)            ;
-void DecodeProblem(struct Stack *stack, int problem_code)   ;
+int  StackCtor    (struct Stack *stack, int number VAR_INFO);
 int  StackPush    (struct Stack *stack, int number)         ; 
 int  StackPop     (Stack *stack, int *err_code)             ;
-void StackDump    (struct Stack *stack, int problem_code)   ;
-void StackDtor    (struct Stack *stack)                     ;
 int  StackTop     (struct Stack *stack, int *error_code)    ;
+
+void GetActionInfo(struct Stack *stack VAR_INFO)            ;
+void StackDump    (struct Stack *stack, int problem_code)   ;
 int  StackVerify  (struct Stack *stack)                     ;
+void DecodeProblem(struct Stack *stack, int problem_code)   ;
+
 void StackPrint   (struct Stack *stack)                     ;
+void StackDtor    (struct Stack *stack)                     ;
 
 #endif //STACK_H
